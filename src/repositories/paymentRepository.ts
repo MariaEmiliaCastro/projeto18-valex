@@ -1,4 +1,4 @@
-import { connection } from "../database.js";
+import { connection } from "../database";
 
 export interface Payment {
   id: number;
@@ -32,4 +32,17 @@ export async function insert(paymentData: PaymentInsertData) {
     `INSERT INTO payments ("cardId", "businessId", amount) VALUES ($1, $2, $3)`,
     [cardId, businessId, amount]
   );
+}
+
+export async function paymentsBalance(cardId : number){
+  const balance = await connection.query<any, [number]>(
+    `SELECT SUM(payments.amount) as "balance" 
+    FROM payments 
+    JOIN cards
+    ON payments."cardId" = cards.id
+    WHERE cards.id = $1`,
+    [cardId]
+  );
+
+  return balance.rows[0];
 }
