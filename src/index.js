@@ -1,0 +1,13 @@
+"use strict";
+exports.__esModule = true;
+var express_1 = require("express");
+var cors_1 = require("cors");
+var dotenv_1 = require("dotenv");
+var routes_js_1 = require("./routes/routes.js");
+dotenv_1["default"].config();
+var app = (0, express_1["default"])();
+app.use((0, cors_1["default"])());
+app.use(express_1["default"].json());
+app.use(routes_js_1["default"]);
+var PORT = process.env.PORT || 4000;
+app.listen(PORT, function () { return console.log("Server started on port " + PORT); });
